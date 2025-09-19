@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MaterialsIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function TabLayout() {
   return (
@@ -9,24 +10,36 @@ export default function TabLayout() {
           name="index"
           options={{
             title: "Home",
+            tabBarIcon: ({ color }) => (
+              <MaterialsIcons name="home" size={24} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
-          name="bookList"
+          name="bookListScreen"
           options={{
             title: "Livres",
+            tabBarIcon: ({ color }) => (
+              <MaterialsIcons name="book" size={24} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
-          name="authorList"
+          name="authorListScreen"
           options={{
             title: "Auteurs",
+            tabBarIcon: ({ color }) => (
+              <MaterialsIcons name="person" size={24} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
-          name="editorList"
+          name="editorListScreen"
           options={{
             title: "Editeurs",
+            tabBarIcon: ({ color }) => (
+              <MaterialsIcons name="domain" size={24} color={color} />
+            ),
           }}
         />
       </Tabs>

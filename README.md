@@ -47,5 +47,5 @@ L'application doit savoir où se connecter à votre backend Symfony. Vous devez 
     ```javascript
     // config.js
     const API_BASE_URL = 'http://192.168.1.XX:8000'; // Remplacez par l'adresse IP de votre machine et le port de Symfony
-
+    // ATTENTION VOTRE TELEPHONE OU VOTRE SIMULATEUR N'A PAS ACCÉS À 127.0.0.1
     export default API_BASE_URL;
