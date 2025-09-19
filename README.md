@@ -1,50 +1,51 @@
-# Welcome to your Expo app 👋
+# expoBiblio-frontend
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Ce dépôt contient le frontend de l'application mobile expoBiblio, développé avec React Native et Expo. Il permet aux utilisateurs de consulter les livres, auteurs et éditeurs disponibles via l'API REST fournie par le backend.
 
-## Get started
+## Prérequis
 
-1. Install dependencies
+Avant de commencer, assurez-vous d'avoir installé les outils suivants sur votre machine :
 
-   ```bash
-   npm install
-   ```
+- [Node.js](https://nodejs.org/en/) (version 16 ou supérieure recommandée)
+- [npm](https://www.npmjs.com/) (généralement installé avec Node.js) ou [Yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) :
 
-2. Start the app
+  ```bash
+  npm install -g expo-cli
+  ```
 
-   ```bash
-   npx expo start
-   ```
+- Un émulateur Android, un simulateur iOS, ou un appareil physique Android/iOS pour tester l'application.
 
-In the output, you'll find options to open the app in a
+## Installation et Configuration
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Suivez ces étapes pour mettre en place l'environnement de développement.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 1. Installation des dépendances
 
-## Get a fresh project
-
-When you're ready, run:
+Une fois que vous avez cloné le projet et que vous êtes dans le répertoire `appExpoBiblio`, installez les dépendances JavaScript avec npm ou Yarn :
 
 ```bash
-npm run reset-project
+npm install
+# ou
+yarn install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Configuration de l'API
 
-## Learn more
+L'application doit savoir où se connecter à votre backend Symfony. Vous devez configurer l'URL de base de votre API.
 
-To learn more about developing your project with Expo, look at the following resources:
+1. **Créez un fichier de configuration locale :**
+    Créez un fichier nommé `config.js` à la racine du projet (au même niveau que `App.js`).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+    ```bash
+    touch config.js
+    ```
 
-## Join the community
+2. **Modifiez `config.js` :**
+    Ouvrez le fichier `config.js` et ajoutez l'URL de votre backend Symfony.
 
-Join our community of developers creating universal apps.
+    ```javascript
+    // config.js
+    const API_BASE_URL = 'http://192.168.1.XX:8000'; // Remplacez par l'adresse IP de votre machine et le port de Symfony
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+    export default API_BASE_URL;
