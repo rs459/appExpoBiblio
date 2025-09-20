@@ -8,13 +8,17 @@ import {
   getEditor,
 } from "@/utils/api";
 
-import { Book, Author, Editor } from "@/types/apiTypes";
+import { Author } from "@/types/Author";
+import { Editor } from "@/types/Editor";
+import { Book } from "@/types/Book";
+import { PaginatedResponse } from "@/types/paginatedType";
 
 // Hook pour récupérer la liste de tous les livres
-export const useBooks = () => {
-  return useQuery<Book[], Error>({
-    queryKey: ["books"],
-    queryFn: getBooks,
+export const useBooks = (page = 1) => {
+  return useQuery<PaginatedResponse<Book>, Error>({
+    queryKey: ["books", page],
+    queryFn: () => getBooks(page),
+    placeholderData: (previousData) => previousData,
   });
 };
 
@@ -28,10 +32,11 @@ export const useBook = (id: number) => {
 };
 
 // Hook pour récupérer la liste de tous les auteurs
-export const useAuthors = () => {
-  return useQuery<Author[], Error>({
+export const useAuthors = (page = 1) => {
+  return useQuery<PaginatedResponse<Author>, Error>({
     queryKey: ["authors"],
-    queryFn: getAuthors,
+    queryFn: () => getAuthors(page),
+    placeholderData: (previousData) => previousData,
   });
 };
 
@@ -44,10 +49,11 @@ export const useAuthor = (id: number) => {
   });
 };
 
-export const useEditors = () => {
-  return useQuery<Editor[], Error>({
+export const useEditors = (page = 1) => {
+  return useQuery<PaginatedResponse<Editor>, Error>({
     queryKey: ["editors"],
-    queryFn: getEditors,
+    queryFn: () => getEditors(page),
+    placeholderData: (previousData) => previousData,
   });
 };
 

@@ -2,46 +2,53 @@ import {
   View,
   Text,
   FlatList,
-  ActivityIndicator,
+  Image,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
+  AccessibilityInfo,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useBooks } from "@/hooks/useApi";
 import { router } from "expo-router";
+import { Book } from "@/types/Book";
+import LoaderPerso from "@/components/LoaderScreenLists";
+import ErrorPerso from "@/components/ErrorScreenLists";
+import Perso404 from "@/components/Perso404ScreenLists";
+import { PaginatedResponse } from "@/types/paginatedType";
 
 export default function BookListScreen() {
-  const { data: books, isLoading, isError, error } = useBooks();
+  const [page, setPage] = useState(1);
+  const { data, isLoading, isError, error } = useBooks(page);
+  const [allBooks, setAllBooks] = useState<Book[]>([]);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
-        <Text>Chargement des livres...</Text>
-      </View>
-    );
-  }
+  useEffect(() => {
+    if (data && data.items && page > 1) {
+      setAllBooks((prevBooks) => [...prevBooks, ...data.items]);
+      AccessibilityInfo.announceForAccessibility(
+        data.items.length + "Livres ajoutées à la liste"
+      );
+    } else if (data && data.items) {
+      setAllBooks(data.items);
+    }
+  }, [data]);
 
-  if (isError) {
-    // Afficher l'erreur dans la console aide énormément au débogage.
-    console.error("Erreur de chargement des livres:", error);
-    return <Text>Erreur: {error.message}</Text>;
-  }
+  if (isLoading) return <LoaderPerso message="Chargement des livres..." />;
+
+  if (isError) return <ErrorPerso error={error} />;
+
+  if (!data) return <Perso404 />;
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Bibliothèque</Text>
+
       <FlatList
-        data={books}
+        data={allBooks}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.itemContainer}
-            onPress={() => router.push(`/book/${item.id}`)}
-          >
-            <Text style={styles.itemTitle}>{item.title}</Text>
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => <RenderItemComp item={item} />}
+        ListFooterComponent={
+          <FooterForList page={page} data={data} setPage={setPage} />
+        }
         ListEmptyComponent={
           <View style={styles.centered}>
             <Text>Aucun livre n'a été trouvé.</Text>
@@ -51,6 +58,54 @@ export default function BookListScreen() {
     </View>
   );
 }
+
+const RenderItemComp = ({ item }: { item: Book }) => {
+  return (
+    <Pressable
+      style={styles.itemContainer}
+      onPress={() => router.push(`/book/${item.id}`)}
+    >
+      <Image
+        source={{
+          uri: item.image,
+        }}
+        style={{ width: 75, height: 100 }}
+      />
+      <View style={{ flex: 1, marginLeft: 16 }}>
+        <Text style={styles.itemTitle}>{item.title}</Text>
+        <Text style={styles.itemAuthor}>
+          {item.author.firstName} {item.author.lastName}
+        </Text>
+      </View>
+    </Pressable>
+  );
+};
+
+const FooterForList = ({
+  page,
+  setPage,
+  data,
+}: {
+  page: number;
+  setPage: Function;
+  data: PaginatedResponse<Book>;
+}) => {
+  return (
+    data.view?.next && (
+      <Pressable onPress={() => setPage(page + 1)}>
+        <Text
+          style={{
+            paddingVertical: 16,
+            textAlign: "center",
+            color: "blue",
+          }}
+        >
+          Charger plus de livres
+        </Text>
+      </Pressable>
+    )
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -66,6 +121,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     backgroundColor: "white",
     padding: 16,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },

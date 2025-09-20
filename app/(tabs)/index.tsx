@@ -1,10 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 
 export default function tabsIndex() {
   return (
     <View>
-      <Text>index</Text>
+      <Text>Vue accueil</Text>
     </View>
   );
 }
