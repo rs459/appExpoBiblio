@@ -7,7 +7,7 @@ interface loaderProps {
 
 export default function LoaderPerso({ children, message }: loaderProps) {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View className="flex flex-1 justify-center items-center bg-gray-100">
       <ActivityIndicator size="large" />
       <Text>{message}</Text>
       {children}

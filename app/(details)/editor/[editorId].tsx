@@ -32,17 +32,8 @@ export default function book() {
   }
 
   return (
-    <View style={{ flex: 1, padding: 24 }}>
-      <Text
-        style={{
-          fontSize: 24,
-          fontWeight: "bold",
-          textAlign: "center",
-          marginBottom: 16,
-        }}
-      >
-        {editor.name}
-      </Text>
+    <View className="flex flex-1 p-6">
+      <Text className="text-2xl font-bold mb-4 text-center">{editor.name}</Text>
       <View>
         <Text>Siege social: {editor.headquarter}</Text>
         <Text>Année de création: {getYear(editor.creationDate)}</Text>

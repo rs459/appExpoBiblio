@@ -1,4 +1,4 @@
-import { Alert, Pressable, StyleSheet } from "react-native";
+import { Alert, Pressable } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 // import {
 //   useDeleteAuthor,
@@ -100,7 +100,10 @@ export default function DeleteItem({ id, itemType }: DeleteItemProps) {
   };
 
   return (
-    <Pressable style={styles.fabButton} onPress={handleDelete}>
+    <Pressable
+      className="h-[50] w-[50] rounded-full bg-red-500 items-center justify-center"
+      onPress={handleDelete}
+    >
       <MaterialIcons
         name="delete"
         size={24}
@@ -110,20 +113,3 @@ export default function DeleteItem({ id, itemType }: DeleteItemProps) {
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  fabButton: {
-    backgroundColor: "red",
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-  },
-});

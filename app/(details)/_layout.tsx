@@ -5,19 +5,14 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function DetailsLayout() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 }}>
+    <SafeAreaView className="flex-1">
+      <View className="flex-1">
         <Pressable
           onPress={() => router.back()}
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            padding: 16,
-          }}
+          className="flex flex-row justify-start items-center p-4"
         >
           <MaterialIcons name="arrow-back" size={24} color="black" />
-          <Text style={{ marginLeft: 8, color: "black" }}>Retour</Text>
+          <Text className="ml-2">Retour</Text>
         </Pressable>
         <Slot />
       </View>

@@ -25,7 +25,7 @@ export default function RedirectForEdit({
 
   return (
     <Pressable
-      style={styles.fabButton}
+      className="h-[50] w-[50] rounded-full bg-green-800 items-center justify-center"
       onPress={() => router.push(url[itemType])}
     >
       <MaterialIcons
@@ -37,22 +37,3 @@ export default function RedirectForEdit({
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  fabButton: {
-    backgroundColor: "green",
-    width: 50,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-});
