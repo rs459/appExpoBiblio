@@ -7,7 +7,6 @@ import LoaderPerso from "@/components/LoaderScreenLists";
 import Perso404 from "@/components/Perso404ScreenLists";
 import ErrorPerso from "@/components/ErrorScreenLists";
 import { PaginatedResponse } from "@/types/paginatedType";
-import RedirectForCreate from "@/components/FabBar/RedirectForCreate";
 import FabBar from "@/components/FabBar/FabBar";
 
 export default function EditorList() {
@@ -41,10 +40,7 @@ export default function EditorList() {
         }
         ListEmptyComponent={<Text>Aucun éditeur n'a été trouvé.</Text>}
       />
-      <FabBar
-        urlToCreate="/editor/editorCreate"
-        a11yHintCreate="Ajouter un éditeur"
-      />
+      <FabBar itemType="editor" />
     </View>
   );
 }
