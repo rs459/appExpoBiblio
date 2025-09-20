@@ -1,16 +1,18 @@
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import { useEffect, useState } from "react";
 import { useAuthors } from "@/hooks/useApi";
-import { Author } from "@/types/Author";
 import { router } from "expo-router";
-import LoaderPerso from "@/components/LoaderScreenLists";
 import ErrorPerso from "@/components/ErrorScreenLists";
 import Perso404 from "@/components/Perso404ScreenLists";
+import LoaderPerso from "@/components/LoaderScreenLists";
+import RedirectForCreate from "@/components/FabBar/RedirectForCreate";
+import FabBar from "@/components/FabBar/FabBar";
 import { PaginatedResponse } from "@/types/paginatedType";
+import { Author } from "@/types/Author";
 
 export default function authorList() {
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error } = useAuthors();
+  const { data, isLoading, isError, error } = useAuthors(page);
   const [allAuthors, setAllAuthors] = useState<Author[]>([]);
 
   useEffect(() => {
@@ -39,6 +41,7 @@ export default function authorList() {
         }
         ListEmptyComponent={<Text>Aucun auteur n'a été trouvé.</Text>}
       />
+      <FabBar itemType="author" />
     </View>
   );
 }

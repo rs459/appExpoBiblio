@@ -15,6 +15,7 @@ import LoaderPerso from "@/components/LoaderScreenLists";
 import ErrorPerso from "@/components/ErrorScreenLists";
 import Perso404 from "@/components/Perso404ScreenLists";
 import { PaginatedResponse } from "@/types/paginatedType";
+import FabBar from "@/components/FabBar/FabBar";
 
 export default function BookListScreen() {
   const [page, setPage] = useState(1);
@@ -55,6 +56,7 @@ export default function BookListScreen() {
           </View>
         }
       />
+      <FabBar itemType="book" />
     </View>
   );
 }

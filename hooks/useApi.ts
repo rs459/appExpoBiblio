@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getBooks,
   getBook,
+  deleteBook,
   getAuthors,
   getAuthor,
   getEditors,

@@ -7,10 +7,12 @@ import LoaderPerso from "@/components/LoaderScreenLists";
 import Perso404 from "@/components/Perso404ScreenLists";
 import ErrorPerso from "@/components/ErrorScreenLists";
 import { PaginatedResponse } from "@/types/paginatedType";
+import RedirectForCreate from "@/components/FabBar/RedirectForCreate";
+import FabBar from "@/components/FabBar/FabBar";
 
 export default function EditorList() {
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error } = useEditors();
+  const { data, isLoading, isError, error } = useEditors(page);
   const [allEditors, setAllEditors] = useState<Editor[]>([]);
 
   useEffect(() => {
@@ -38,6 +40,10 @@ export default function EditorList() {
           <FooterForList page={page} data={data} setPage={setPage} />
         }
         ListEmptyComponent={<Text>Aucun éditeur n'a été trouvé.</Text>}
+      />
+      <FabBar
+        urlToCreate="/editor/editorCreate"
+        a11yHintCreate="Ajouter un éditeur"
       />
     </View>
   );

@@ -1,8 +1,8 @@
-import { View, Text, Image, ActivityIndicator } from "react-native";
-import React from "react";
+import { View, Text, ActivityIndicator } from "react-native";
 import { useEditor } from "@/hooks/useApi";
-import { Link, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import getYear from "@/utils/isoDateTo";
+import FabBar from "@/components/FabBar/FabBar";
 
 export default function book() {
   const { editorId } = useLocalSearchParams();
@@ -43,11 +43,11 @@ export default function book() {
       >
         {editor.name}
       </Text>
-
-      <View style={{}}>
+      <View>
         <Text>Siege social: {editor.headquarter}</Text>
         <Text>Année de création: {getYear(editor.creationDate)}</Text>
       </View>
+      <FabBar id={editor.id} itemType={"editor"} />
     </View>
   );
 }

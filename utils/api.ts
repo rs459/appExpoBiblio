@@ -24,6 +24,11 @@ export const getBook = async (id: number) => {
   return data;
 };
 
+export const deleteBook = async (id: number) => {
+  const { data } = await api.delete(`/api/books/${id}`);
+  return data;
+};
+
 // Auteurs
 export const getAuthors = async (
   page = 1
