@@ -1,10 +1,7 @@
 import { Alert, Pressable } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-// import {
-//   useDeleteAuthor,
-//   useDeleteBook,
-//   useDeleteEditor,
-// } from "@/hooks/useApi";
+import { useDeleteBook } from "@/hooks/useApi";
+import { router } from "expo-router";
 
 interface DeleteItemProps {
   id: number;
@@ -12,7 +9,7 @@ interface DeleteItemProps {
 }
 
 export default function DeleteItem({ id, itemType }: DeleteItemProps) {
-  //   const deleteBookMutation = useDeleteBook();
+  const deleteBookMutation = useDeleteBook();
   //   const deleteAuthorMutation = useDeleteAuthor();
   //   const deleteEditorMutation = useDeleteEditor();
 
@@ -25,26 +22,23 @@ export default function DeleteItem({ id, itemType }: DeleteItemProps) {
           [
             {
               text: "Oui",
-              onPress: () => console.log("Oui"),
+              onPress: () => {
+                deleteBookMutation.mutate(id, {
+                  onSuccess: () => {
+                    router.back();
+                  },
+                });
+              },
             },
             {
               text: "Non",
-              onPress: () => console.log("Non"),
               style: "cancel",
             },
           ]
         );
-        // deleteBookMutation.mutate(id, {
-        //   onSuccess: () => {
-        //     router.back();
-        //   },
-        // });
+
         break;
       case "author":
-        // Alert.alert(
-        //   "Confirmation de suppresion",
-        //   "Êtes-vous sûr de vouloir supprimer cet auteur ?"
-        // );
         Alert.alert(
           "Suppresion d'un auteur",
           "Voulez vous supprimer cet auteur ?",
@@ -60,11 +54,6 @@ export default function DeleteItem({ id, itemType }: DeleteItemProps) {
             },
           ]
         );
-        // deleteAuthorMutation.mutate(id, {
-        //   onSuccess: () => {
-        //     router.back();
-        //   },
-        // });
         break;
       case "editor":
         Alert.alert(
@@ -82,11 +71,6 @@ export default function DeleteItem({ id, itemType }: DeleteItemProps) {
             },
           ]
         );
-        // deleteEditorMutation.mutate(id, {
-        //   onSuccess: () => {
-        //     router.back();
-        //   },
-        // });
         break;
       default:
         break;

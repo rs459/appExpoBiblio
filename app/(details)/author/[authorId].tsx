@@ -1,16 +1,7 @@
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-  ScrollView,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import React from "react";
 import { useAuthor } from "@/hooks/useApi";
-import { Link, useLocalSearchParams } from "expo-router";
-import RedirectForEdit from "@/components/FabBar/RedirectForEdit";
-import DeleteItem from "@/components/FabBar/DeleteItem";
+import { useLocalSearchParams } from "expo-router";
 import FabBar from "@/components/FabBar/FabBar";
 
 export default function book() {
@@ -41,20 +32,19 @@ export default function book() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ flex: 1, padding: 24 }}>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: "bold",
-            textAlign: "center",
-            marginBottom: 16,
-          }}
-        >
+    <View className="flex-1">
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          padding: 16,
+        }}
+      >
+        <Text className="text-2xl font-bold text-center mb-6">
           {author.firstName} {author.lastName}
         </Text>
         <FabBar id={author.id} itemType={"author"} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getBooks,
   getBook,
@@ -29,13 +29,25 @@ export const useBook = (id: number) => {
     queryKey: ["book", id],
     queryFn: () => getBook(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5min
+  });
+};
+
+// Hook pour supprimer un livre
+export const useDeleteBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => deleteBook(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["books"] });
+    },
   });
 };
 
 // Hook pour récupérer la liste de tous les auteurs
 export const useAuthors = (page = 1) => {
   return useQuery<PaginatedResponse<Author>, Error>({
-    queryKey: ["authors"],
+    queryKey: ["authors", page],
     queryFn: () => getAuthors(page),
     placeholderData: (previousData) => previousData,
   });
@@ -47,12 +59,13 @@ export const useAuthor = (id: number) => {
     queryKey: ["author", id],
     queryFn: () => getAuthor(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5min
   });
 };
 
 export const useEditors = (page = 1) => {
   return useQuery<PaginatedResponse<Editor>, Error>({
-    queryKey: ["editors"],
+    queryKey: ["editors", page],
     queryFn: () => getEditors(page),
     placeholderData: (previousData) => previousData,
   });
@@ -63,5 +76,6 @@ export const useEditor = (id: number) => {
     queryKey: ["editor", id],
     queryFn: () => getEditor(id),
     enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5min
   });
 };

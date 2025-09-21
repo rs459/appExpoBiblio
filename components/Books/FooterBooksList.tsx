@@ -14,7 +14,7 @@ export default function FooterBooksList({
   return (
     data.view?.next && (
       <Pressable onPress={() => setPage(page + 1)}>
-        <Text className="text-blue-500, text-center, font-bold, size-5">
+        <Text className="text-blue-500 text-center underline font-bold flex-1 p-4">
           Charger plus de livres
         </Text>
       </Pressable>

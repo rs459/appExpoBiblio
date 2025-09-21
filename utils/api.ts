@@ -1,4 +1,3 @@
-import API_BASE_URL from "@/config.js";
 import axios from "axios";
 import { PaginatedResponse } from "@/types/paginatedType";
 import { Book } from "@/types/Book";
@@ -6,7 +5,7 @@ import { Author } from "@/types/Author";
 import { Editor } from "@/types/Editor";
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
 // Livres

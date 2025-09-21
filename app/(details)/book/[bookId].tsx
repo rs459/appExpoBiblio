@@ -1,5 +1,4 @@
-import { Text, Image, Pressable, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Text, Image, Pressable, ScrollView, View } from "react-native";
 import { router } from "expo-router";
 import { useBook } from "@/hooks/useApi";
 import { useLocalSearchParams } from "expo-router";
@@ -25,8 +24,8 @@ export default function book() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 24 }}>
+    <View className="flex-1">
+      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 16 }}>
         <Text
           style={{
             fontSize: 24,
@@ -65,6 +64,6 @@ export default function book() {
         </Pressable>
         <FabBar id={book.id} itemType={"book"} />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

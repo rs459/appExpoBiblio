@@ -1,21 +1,21 @@
 import { View, Text, Pressable } from "react-native";
 import { router, Slot } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import SafeAreaContainer from "@/components/SafeAreaContainer";
 
 export default function DetailsLayout() {
   return (
-    <SafeAreaView className="flex-1">
-      <View className="flex-1">
+    <SafeAreaContainer className="flex-1 bg-gray-100">
+      <View className="flex-row items-center p-2 bg-white border-b border-gray-200">
         <Pressable
           onPress={() => router.back()}
-          className="flex flex-row justify-start items-center p-4"
+          className="flex-row items-center"
         >
           <MaterialIcons name="arrow-back" size={24} color="black" />
-          <Text className="ml-2">Retour</Text>
+          <Text className="ml-2 text-lg">Retour</Text>
         </Pressable>
-        <Slot />
       </View>
-    </SafeAreaView>
+      <Slot />
+    </SafeAreaContainer>
   );
 }

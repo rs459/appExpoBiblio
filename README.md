@@ -33,19 +33,17 @@ yarn install
 ### 2. Configuration de l'API
 
 L'application doit savoir où se connecter à votre backend Symfony. Vous devez configurer l'URL de base de votre API.
+Cette configuration se fait via des variables d'environnement.
 
-1. **Créez un fichier de configuration locale :**
-    Créez un fichier nommé `config.js` à la racine du projet (au même niveau que `App.js`).
+1. **Créez un fichier `.env` à la racine du projet :**
+   Ce fichier sera utilisé pour le développement local.
 
-    ```bash
-    touch config.js
-    ```
+2. **Modifiez `.env` :**
+   Ouvrez le fichier `.env` et ajoutez l'URL de votre backend Symfony. La variable doit commencer par `EXPO_PUBLIC_`.
 
-2. **Modifiez `config.js` :**
-    Ouvrez le fichier `config.js` et ajoutez l'URL de votre backend Symfony.
+   ```bash
+   # .env
+   EXPO_PUBLIC_API_URL=http://192.168.1.XX:8000 # Remplacez par l'IP de votre machine
+   ```
 
-    ```javascript
-    // config.js
-    const API_BASE_URL = 'http://192.168.1.XX:8000'; // Remplacez par l'adresse IP de votre machine et le port de Symfony
-    // ATTENTION VOTRE TELEPHONE OU VOTRE SIMULATEUR N'A PAS ACCÉS À 127.0.0.1
-    export default API_BASE_URL;
+   **Attention** : Votre téléphone ou votre simulateur n'a pas accès à `127.0.0.1` ou `localhost`. Utilisez l'adresse IP de votre machine sur le réseau local.

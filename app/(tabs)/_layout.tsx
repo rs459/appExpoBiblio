@@ -1,10 +1,10 @@
 import { Tabs } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 import MaterialsIcons from "@expo/vector-icons/MaterialIcons";
+import SafeAreaContainer from "@/components/SafeAreaContainer";
 
 export default function TabLayout() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaContainer className="flex-1">
       <Tabs screenOptions={{ headerShown: false }}>
         <Tabs.Screen
           name="index"
@@ -43,6 +43,6 @@ export default function TabLayout() {
           }}
         />
       </Tabs>
-    </SafeAreaView>
+    </SafeAreaContainer>
   );
 }
