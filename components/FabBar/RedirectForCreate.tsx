@@ -23,7 +23,7 @@ export default function RedirectForCreate({
 
   return (
     <Pressable
-      className="h-[50] w-[50] rounded-full bg-blue-800 items-center justify-center"
+      className="h-[50] w-[50] rounded-full items-center justify-center"
       onPress={() => router.push(url[itemType])}
     >
       <MaterialIcons

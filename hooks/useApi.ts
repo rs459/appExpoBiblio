@@ -7,12 +7,40 @@ import {
   getAuthor,
   getEditors,
   getEditor,
+  postAuth,
 } from "@/utils/api";
 
 import { Author } from "@/types/Author";
 import { Editor } from "@/types/Editor";
 import { Book } from "@/types/Book";
 import { PaginatedResponse } from "@/types/paginatedType";
+import { AxiosError } from "axios";
+import Toast from "react-native-toast-message";
+import { extractApiErrorMessage } from "@/utils/errorUtils";
+
+//Hook pour s'authentifier
+export const useAuth = () => {
+  return useMutation<
+    { token: string },
+    AxiosError,
+    { email: string; password: string }
+  >({
+    mutationFn: (credentials) => postAuth(credentials),
+    onSuccess: () => {
+      Toast.show({
+        type: "success",
+        text1: "Authentification réussie",
+      });
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "error",
+        text1: "Échec de l'authentification",
+        text2: extractApiErrorMessage(error),
+      });
+    },
+  });
+};
 
 // Hook pour récupérer la liste de tous les livres
 export const useBooks = (page = 1) => {
@@ -39,6 +67,10 @@ export const useDeleteBook = () => {
   return useMutation({
     mutationFn: (id: number) => deleteBook(id),
     onSuccess: () => {
+      Toast.show({
+        type: "success",
+        text1: "Livre supprimé avec succès",
+      });
       queryClient.invalidateQueries({ queryKey: ["books"] });
     },
   });
