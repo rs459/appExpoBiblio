@@ -18,30 +18,6 @@ import { AxiosError } from "axios";
 import Toast from "react-native-toast-message";
 import { extractApiErrorMessage } from "@/utils/errorUtils";
 
-//Hook pour s'authentifier
-export const useAuth = () => {
-  return useMutation<
-    { token: string },
-    AxiosError,
-    { email: string; password: string }
-  >({
-    mutationFn: (credentials) => postAuth(credentials),
-    onSuccess: () => {
-      Toast.show({
-        type: "success",
-        text1: "Authentification réussie",
-      });
-    },
-    onError: (error) => {
-      Toast.show({
-        type: "error",
-        text1: "Échec de l'authentification",
-        text2: extractApiErrorMessage(error),
-      });
-    },
-  });
-};
-
 // Hook pour récupérer la liste de tous les livres
 export const useBooks = (page = 1) => {
   return useQuery<PaginatedResponse<Book>, Error>({
