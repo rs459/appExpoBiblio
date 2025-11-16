@@ -1,5 +1,5 @@
 import User from "@/types/User";
-import { postAuth } from "@/utils/api";
+import { postAuth, registerUser } from "@/utils/api";
 import * as SecureStore from "expo-secure-store";
 import { create } from "zustand";
 
@@ -13,6 +13,7 @@ interface AuthState {
 
   // Actions
   login: (credentials: { email: string; password: string }) => Promise<void>;
+  register: (userData: { email: string; password: string }) => Promise<void>;
   logout: () => Promise<void>;
   restoreSession: () => Promise<void>;
   clearError: () => void;
@@ -41,6 +42,30 @@ export const useAuthStore = create<AuthState>((set) => ({
     } catch (error: any) {
       set({
         error: error.response?.data?.message || "Échec de l'authentification",
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  register: async (userData) => {
+    set({ isLoading: true, error: null });
+    try {
+      await registerUser(userData);
+
+      // Connexion automatique après l'inscription
+      const data = await postAuth(userData);
+
+      set({
+        user: { email: userData.email },
+        token: data.token,
+        refreshToken: data.refresh_token,
+        isAuthenticated: true,
+        isLoading: false,
+      });
+    } catch (error: any) {
+      set({
+        error: error.response?.data?.message || "Échec de l'inscription",
         isLoading: false,
       });
       throw error;

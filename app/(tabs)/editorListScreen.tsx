@@ -1,26 +1,22 @@
-import { View, Text, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useEditors } from "@/hooks/useApi";
-import { Editor } from "@/types/Editor";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import React from "react";
+import { useEditorsInfinite } from "@/hooks/useApi";
 import LoaderPerso from "@/components/LoaderScreenLists";
 import Perso404 from "@/components/Perso404ScreenLists";
 import ErrorPerso from "@/components/ErrorScreenLists";
 import FabBar from "@/components/FabBar/FabBar";
-import FooterEditorsList from "@/components/Editors/FooterEditorsList";
 import ItemEditorsList from "@/components/Editors/ItemEditorsList";
 
 export default function EditorList() {
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error } = useEditors(page);
-  const [allEditors, setAllEditors] = useState<Editor[]>([]);
-
-  useEffect(() => {
-    if (data && data.items && page > 1) {
-      setAllEditors((prevEditors) => [...prevEditors, ...data.items]);
-    } else if (data && data.items) {
-      setAllEditors(data.items);
-    }
-  }, [data]);
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useEditorsInfinite();
 
   if (isLoading) return <LoaderPerso message="Chargement des éditeurs..." />;
 
@@ -28,23 +24,36 @@ export default function EditorList() {
 
   if (!data) return <Perso404 />;
 
+  // Fusionner toutes les pages de résultats
+  const allEditors = data.pages.flatMap((page) => page.items);
+
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <Text className="text-2xl font-bold px-4">Liste des Editeurs</Text>
+    <View className="flex flex-1 bg-gray-100">
+      <Text className="text-2xl font-bold p-4">Liste des Editeurs</Text>
       <FlatList
         data={allEditors}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <ItemEditorsList item={item} />}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.5}
         ListFooterComponent={
-          <FooterEditorsList page={page} data={data} setPage={setPage} />
+          isFetchingNextPage ? (
+            <View className="py-4">
+              <ActivityIndicator size="large" color="#3b82f6" />
+            </View>
+          ) : null
         }
-        ListEmptyComponent={<Text>Aucun éditeur n'a été trouvé.</Text>}
+        ListEmptyComponent={
+          <View className="items-center p-4">
+            <Text>Aucun éditeur n'a été trouvé.</Text>
+          </View>
+        }
       />
       <FabBar itemType="editor" />
     </View>
   );
-}
-
-{
-  /* <ItemEditorsList item={item} /> */
 }

@@ -1,35 +1,31 @@
-import { View, Text, FlatList, AccessibilityInfo } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useBooks } from "@/hooks/useApi";
-import { Book } from "@/types/Book";
+import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import React from "react";
+import { useBooksInfinite } from "@/hooks/useApi";
 import LoaderPerso from "@/components/LoaderScreenLists";
 import ErrorPerso from "@/components/ErrorScreenLists";
 import Perso404 from "@/components/Perso404ScreenLists";
 import FabBar from "@/components/FabBar/FabBar";
 import ItemBooksList from "@/components/Books/ItemBooksList";
-import FooterBooksList from "@/components/Books/FooterBooksList";
 
 export default function BookListScreen() {
-  const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error } = useBooks(page);
-  const [allBooks, setAllBooks] = useState<Book[]>([]);
-
-  useEffect(() => {
-    if (data && data.items && page > 1) {
-      setAllBooks((prevBooks) => [...prevBooks, ...data.items]);
-      AccessibilityInfo.announceForAccessibility(
-        data.items.length + "Livres ajoutées à la liste"
-      );
-    } else if (data && data.items) {
-      setAllBooks(data.items);
-    }
-  }, [data]);
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useBooksInfinite();
 
   if (isLoading) return <LoaderPerso message="Chargement des livres..." />;
 
   if (isError) return <ErrorPerso error={error} />;
 
   if (!data) return <Perso404 />;
+
+  // Fusionner toutes les pages de résultats
+  const allBooks = data.pages.flatMap((page) => page.items);
 
   return (
     <View className="flex flex-1 bg-gray-100">
@@ -39,11 +35,21 @@ export default function BookListScreen() {
         data={allBooks}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => <ItemBooksList item={item} />}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.5}
         ListFooterComponent={
-          <FooterBooksList page={page} data={data} setPage={setPage} />
+          isFetchingNextPage ? (
+            <View className="py-4">
+              <ActivityIndicator size="large" color="#3b82f6" />
+            </View>
+          ) : null
         }
         ListEmptyComponent={
-          <View className="text-center">
+          <View className="items-center p-4">
             <Text>Aucun livre n'a été trouvé.</Text>
           </View>
         }

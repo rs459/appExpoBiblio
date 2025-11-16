@@ -5,11 +5,7 @@ import { Tabs } from "expo-router";
 import { useEffect } from "react";
 
 export default function TabLayout() {
-  const { isAuthenticated, restoreSession } = useAuthStore();
-
-  useEffect(() => {
-    restoreSession();
-  }, []);
+  const { isAuthenticated } = useAuthStore();
 
   return (
     <SafeAreaContainer className="flex-1">

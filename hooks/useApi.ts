@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import {
   getBooks,
   getBook,
@@ -24,6 +29,22 @@ export const useBooks = (page = 1) => {
     queryKey: ["books", page],
     queryFn: () => getBooks(page),
     placeholderData: (previousData) => previousData,
+  });
+};
+
+// Hook avec infinite scroll pour les livres
+export const useBooksInfinite = () => {
+  return useInfiniteQuery<PaginatedResponse<Book>, Error>({
+    queryKey: ["books", "infinite"],
+    queryFn: ({ pageParam = 1 }) => getBooks(pageParam as number),
+    getNextPageParam: (lastPage, allPages) => {
+      // Si view.next existe, il y a une page suivante
+      if (lastPage.view?.next) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
   });
 };
 
@@ -61,6 +82,22 @@ export const useAuthors = (page = 1) => {
   });
 };
 
+// Hook avec infinite scroll pour les auteurs
+export const useAuthorsInfinite = () => {
+  return useInfiniteQuery<PaginatedResponse<Author>, Error>({
+    queryKey: ["authors", "infinite"],
+    queryFn: ({ pageParam = 1 }) => getAuthors(pageParam as number),
+    getNextPageParam: (lastPage, allPages) => {
+      // Si view.next existe, il y a une page suivante
+      if (lastPage.view?.next) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+  });
+};
+
 // Hook pour récupérer un auteur spécifique par son ID
 export const useAuthor = (id: number) => {
   return useQuery<Author, Error>({
@@ -76,6 +113,22 @@ export const useEditors = (page = 1) => {
     queryKey: ["editors", page],
     queryFn: () => getEditors(page),
     placeholderData: (previousData) => previousData,
+  });
+};
+
+// Hook avec infinite scroll pour les éditeurs
+export const useEditorsInfinite = () => {
+  return useInfiniteQuery<PaginatedResponse<Editor>, Error>({
+    queryKey: ["editors", "infinite"],
+    queryFn: ({ pageParam = 1 }) => getEditors(pageParam as number),
+    getNextPageParam: (lastPage, allPages) => {
+      // Si view.next existe, il y a une page suivante
+      if (lastPage.view?.next) {
+        return allPages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
   });
 };
 
