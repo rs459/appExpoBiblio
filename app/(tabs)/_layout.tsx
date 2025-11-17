@@ -2,14 +2,20 @@ import SafeAreaContainer from "@/components/SafeAreaContainer";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import MaterialsIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
-import { useEffect } from "react";
 
 export default function TabLayout() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isAdmin } = useAuthStore();
 
   return (
     <SafeAreaContainer className="flex-1">
-      <Tabs screenOptions={{ headerShown: false }}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: {
+            backgroundColor: "#ffffff",
+          },
+        }}
+      >
         <Tabs.Protected guard={!isAuthenticated}>
           <Tabs.Screen
             name="loginScreen"
@@ -41,6 +47,15 @@ export default function TabLayout() {
             }}
           />
           <Tabs.Screen
+            name="googleBooksImportScreen"
+            options={{
+              title: "Importer",
+              tabBarIcon: ({ color }) => (
+                <MaterialsIcons name="cloud-download" size={24} color={color} />
+              ),
+            }}
+          />
+          <Tabs.Screen
             name="authorListScreen"
             options={{
               title: "Auteurs",
@@ -65,6 +80,16 @@ export default function TabLayout() {
               tabBarIcon: ({ color }) => (
                 <MaterialsIcons name="account-circle" size={24} color={color} />
               ),
+            }}
+          />
+          <Tabs.Screen
+            name="adminUsersScreen"
+            options={{
+              title: "Utilisateurs",
+              tabBarIcon: ({ color }) => (
+                <MaterialsIcons name="people" size={24} color={color} />
+              ),
+              href: isAdmin ? undefined : null,
             }}
           />
         </Tabs.Protected>

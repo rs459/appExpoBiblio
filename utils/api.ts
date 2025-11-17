@@ -4,6 +4,7 @@ import { PaginatedResponse } from "@/types/paginatedType";
 import { Book } from "@/types/Book";
 import { Author } from "@/types/Author";
 import { Editor } from "@/types/Editor";
+import User from "@/types/User";
 
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -200,4 +201,53 @@ export const getEditors = async (
 export const getEditor = async (id: number) => {
   const { data } = await api.get(`/api/editors/${id}`);
   return data;
+};
+
+// Google Books
+export interface GoogleBookSearchResult {
+  googleId: string;
+  title: string;
+  description: string;
+  pageCount: number;
+  thumbnail: string;
+  authors: string[];
+  publisher: string | null;
+  publishedDate: string | null;
+  isbn10: string | null;
+  isbn13: string | null;
+}
+
+export const searchGoogleBooks = async (
+  query: string,
+  maxResults = 10
+): Promise<GoogleBookSearchResult[]> => {
+  const { data } = await api.get(`/api/google-books/search`, {
+    params: { q: query, maxResults },
+  });
+  return data.items || [];
+};
+
+export const importBookFromGoogle = async (googleId: string): Promise<Book> => {
+  const { data } = await api.post(`/api/google-books/import`, { googleId });
+  return data.book;
+};
+
+export const deleteAccount = async (): Promise<void> => {
+  await api.delete(`/api/users/me`);
+};
+
+// Admin - User management
+export const getAllUsers = async (): Promise<User[]> => {
+  const { data } = await api.get(`/api/users`);
+  return data;
+};
+
+export const blockUser = async (userId: number): Promise<User> => {
+  const { data } = await api.patch(`/api/users/${userId}/block`);
+  return data.user;
+};
+
+export const unblockUser = async (userId: number): Promise<User> => {
+  const { data } = await api.patch(`/api/users/${userId}/unblock`);
+  return data.user;
 };

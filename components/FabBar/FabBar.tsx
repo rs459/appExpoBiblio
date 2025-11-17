@@ -1,6 +1,4 @@
 import { View } from "react-native";
-import RedirectForCreate from "./RedirectForCreate";
-import RedirectForEdit from "./RedirectForEdit";
 import DeleteItem from "./DeleteItem";
 
 interface FabBarProps {
@@ -9,18 +7,11 @@ interface FabBarProps {
 }
 
 export default function FabBar({ id, itemType }: FabBarProps) {
-  const isEdit = id !== undefined;
+  if (!id) return null;
 
   return (
     <View className="flex-column space-around items-center gap-5 absolute bottom-8 right-3">
-      {isEdit ? (
-        <>
-          <DeleteItem id={id} itemType={itemType} />
-          <RedirectForEdit id={id} itemType={itemType} />
-        </>
-      ) : (
-        <RedirectForCreate itemType={itemType} />
-      )}
+      <DeleteItem id={id} itemType={itemType} />
     </View>
   );
 }

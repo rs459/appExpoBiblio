@@ -68,7 +68,13 @@ export const useDeleteBook = () => {
         type: "success",
         text1: "Livre supprimé avec succès",
       });
+      // Invalider tous les caches de livres, auteurs et éditeurs (listes et détails)
       queryClient.invalidateQueries({ queryKey: ["books"] });
+      queryClient.invalidateQueries({ queryKey: ["book"] });
+      queryClient.invalidateQueries({ queryKey: ["authors"] });
+      queryClient.invalidateQueries({ queryKey: ["author"] });
+      queryClient.invalidateQueries({ queryKey: ["editors"] });
+      queryClient.invalidateQueries({ queryKey: ["editor"] });
     },
   });
 };
